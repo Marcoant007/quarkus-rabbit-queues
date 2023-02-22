@@ -116,13 +116,13 @@ public class RabbitMqService {
                         try (Response response = httpService.put(urlQuarkusFiscal + "produto/alterar-ncms-venda", json)) {
                             if (response.code() != 200) {
                                 channel.basicNack(deliveryTag, false, false);
-                                Log.info("Mensagem publicada: " + deliveryTag);
+                                Log.error("Tentativa de envio error: " + response.code() + deliveryTag);
                             } else {
                                 channel.basicAck(deliveryTag, false);
                             }
                         }
                     } catch (Exception e) {
-                        logger.error("Tentativa de envio erro 500 " + e.getMessage() + deliveryTag);
+                        logger.error("Tentativa de envio error: 500 " + e.getMessage() + deliveryTag);
                         channel.basicNack(deliveryTag, false, false);
                     }
                 }
